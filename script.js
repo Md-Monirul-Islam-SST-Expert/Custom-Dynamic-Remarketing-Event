@@ -67,29 +67,25 @@ var items = [
     }
 ]
 
-// view item list event
+// view_item_list dataLayer event
 var eventButton = document.getElementById("view-item-list-btn");
-
 if (eventButton) {
-
     eventButton.addEventListener("click", function() {
-
+        
         for ( var i = 0; i < items.length; i++ ){
             var itemsObject = items[i]; 
-
             var itemId = itemsObject.id;
             var variantId = itemsObject.variant_id;
             var countryCode = itemsObject.item_brand;
 
-
             itemsObject.item_id = 'shopify_' + countryCode + '_' + itemId + '_' + variantId;
         }
-    
+
+        // Sum of all item prices from items array
         var totalValue = items.reduce( function(accumulator, currentValue){
             return accumulator + (currentValue.price || 0);
         },0)
 
-    
         // push view_item_list event into datalayer
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push ({
@@ -103,30 +99,25 @@ if (eventButton) {
         console.log("Ecommerce Event:", window.dataLayer);
 
 
-        // push dynamic remarketing event
+        // push dynamic_remarketing dataLayer event 
         for ( var i = 0; i < window.dataLayer.length; i++ ){
-
             var findDatalayer =  window.dataLayer[i];
 
             if (findDatalayer.event === "view_item_list" && findDatalayer.ecommerce) {
-
                 // creating dynamic remarketing items array
                 var dynamicRemarketingArray = [];
-
+                
                 for ( var i = 0; i < items.length; i++ ) {
                     var remarketingItems = items[i];
-
                     var remarketingId = remarketingItems.item_id;
-
                     var remarketingItems = {
                         id : remarketingId,
                         google_business_vertical: 'retail'
                     }
-
                     dynamicRemarketingArray.push(remarketingItems);
                 }
 
-                // push dynamic remarketing event
+                // push dynamic_remarketing dataLayer event 
                 window.dataLayer = window.dataLayer || [];
                 window.dataLayer.push({
                     event: "dynamic_remarketing",
@@ -138,11 +129,9 @@ if (eventButton) {
 }
 
 
-// view item event
+// view_cart dataLayer event
 var eventButton = document.getElementById("view-cart-btn");
-
 if (eventButton) {
-
     eventButton.addEventListener("click", function() {
 
         for ( var i = 0; i < items.length; i++ ){
@@ -158,7 +147,7 @@ if (eventButton) {
             return accumulator + (currentValue.price || 0);
         },0)
     
-        // push view_item_list event into datalayer
+        // push view_cart event into datalayer
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push ({
             event: "view_cart",
